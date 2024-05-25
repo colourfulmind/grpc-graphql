@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+package comments;
+
+option go_package = "ozon/protos/gen/go/comments";
+
+import "google/protobuf/timestamp.proto";
+
+service Comments {
+  /* PostNewComment публикует новый комментарий к посту */
+  rpc PostNewComment (NewCommentRequest) returns (NewCommentResponse);
+  /* PostCommentToComment публикует комментарий к комментарию */
+  rpc PostCommentToComment (PostCommentRequest) returns (NewCommentResponse);
+  /* GetComments получает список комментариев к посту */
+  rpc GetComments (CommentsRequest) returns (CommentsResponse);
+}
+
+message NewCommentRequest {
+  int64 user_id = 1;
+  int64 post_id = 2;
+  string content = 3;
+}
+
+message PostCommentRequest {
+  int64 user_id = 1;
+  int64 post_id = 2;
+  int64 comment_id = 3;
+  string content = 4;
+}
+
+message NewCommentResponse {
+  int64 id = 1;
+  google.protobuf.Timestamp created = 2;
+}
+
+message CommentsRequest {
+  int64 post_id = 1;
+}
+
+message CommentsResponse {
+  repeated Comment comments = 1;
+}
+
+message Comment {
+  int64 id = 1;
+  int64 user_id = 2;
+  int64 post_id = 3;
+  string content = 4;
+  google.protobuf.Timestamp created_at = 5;
+  repeated int64 children = 6;
+}
+

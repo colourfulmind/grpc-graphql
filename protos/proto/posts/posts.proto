@@ -1,0 +1,58 @@
+syntax = "proto3";
+
+package posts;
+
+option go_package = "ozon/protos/gen/go/posts";
+
+import "google/protobuf/timestamp.proto";
+
+service Posts {
+  /* PostNew публикует новый пост */
+  rpc PostNew (NewPostRequest) returns (NewPostResponse);
+  /* GetPostByID получает пост по идентификатору */
+  rpc GetPostByID (GetPostByIDRequest) returns (GetPostByIDResponse);
+  /* GetAllPosts получает список всех постов */
+  rpc GetAllPosts (GetAllPostsRequest) returns (GetPostResponse);
+}
+
+message NewPostRequest {
+  int64 user_id = 1;
+  string title = 2;
+  string content = 3;
+  bool comments = 4;
+}
+
+message NewPostResponse {
+  int64 id = 1;
+  google.protobuf.Timestamp created_at = 2;
+}
+
+message GetPostByIDRequest {
+  int64 id = 1;
+}
+
+message GetPostByIDResponse {
+  int64 id = 1;
+  int64 user_id = 2;
+  string title = 3;
+  string content = 4;
+  google.protobuf.Timestamp created_at = 5;
+  bool comments = 6;
+}
+
+message GetAllPostsRequest {
+  int64 page = 1;
+}
+
+message GetPostResponse {
+  repeated Post posts = 1;
+}
+
+message Post {
+  int64 id = 1;
+  int64 user_id = 2;
+  string title = 3;
+  string content = 4;
+  google.protobuf.Timestamp created_at = 5;
+  bool comments = 6;
+}
