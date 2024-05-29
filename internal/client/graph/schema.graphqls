@@ -1,0 +1,113 @@
+# GraphQL schema example
+#
+# https://gqlgen.com/getting-started/
+
+# SSO
+type RegisterResponse {
+  user_id: Int!
+}
+
+type LoginResponse {
+  token: String!
+}
+
+input RegisterRequest {
+  email: String!
+  password: String!
+}
+
+input LoginRequest {
+    email:    String!
+  password: String!
+}
+
+
+# Posts
+type NewPostResponse {
+  post_id: Int!
+  created_at: String!
+}
+
+type ProvidePostResponse {
+  id: Int!
+  user_id: Int!
+  title: String!
+  content: String!
+  created_at: String!
+  comments: Boolean!
+}
+
+type ProvideAllPostsResponse {
+    posts: [ProvidePostResponse!]!
+}
+
+input NewPostRequest {
+  token: String!
+  title: String!
+  content: String!
+  comments: Boolean!
+}
+
+input ProvidePostRequest {
+  post_id: Int!
+}
+
+input ProvideAllPostsRequest {
+  page: Int!
+}
+
+# Comments
+type SaveCommentResponse {
+  id: Int!
+  created_at: String!
+}
+
+type ProvideCommentResponse {
+    comments: [Comment!]!
+}
+
+type Comment {
+  id: Int!
+  user_id: Int!
+  post_id: Int!
+  content: String!
+  created_at: String!
+  parent_id: Int!
+}
+
+input SaveCommentRequest {
+  token: String!
+  post_id: Int!
+  content: String!
+}
+
+input SaveCommentToCommentRequest {
+  token: String!
+  post_id: Int!
+  parent_id: Int!
+  content: String!
+}
+
+input ProvideCommentRequest {
+  post_id: Int!
+  parent_id: Int!
+}
+
+
+type Mutation {
+  SaveUser(input: RegisterRequest!): RegisterResponse!
+  Login(input: LoginRequest!): LoginResponse!
+
+  SavePost(input: NewPostRequest!): NewPostResponse!
+  ProvidePost(input: ProvidePostRequest!): ProvidePostResponse!
+  ProvideAllPosts(input: ProvideAllPostsRequest!): ProvideAllPostsResponse!
+
+  SaveComment(input: SaveCommentRequest!): SaveCommentResponse!
+  SaveCommentToComment(input: SaveCommentToCommentRequest!): SaveCommentResponse!
+  ProvideComment(input: ProvideCommentRequest!): ProvideCommentResponse!
+}
+
+schema {
+  mutation: Mutation
+}
+

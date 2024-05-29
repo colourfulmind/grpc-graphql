@@ -1,6 +1,11 @@
-.PHONY: build
+.PHONY: build_server
 build_server:
 	go build cmd/server/main.go
+	./main --config=./configs/config.yml
+
+.PHONY: build_client
+build_client:
+	go build cmd/client/main.go
 	./main --config=./configs/config.yml
 
 .PHONY: clean

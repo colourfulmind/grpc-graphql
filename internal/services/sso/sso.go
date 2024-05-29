@@ -25,7 +25,6 @@ type SSO struct {
 	Log          *slog.Logger
 	UserSaver    UserSaver
 	UserProvider UserProvider
-	AppProvider  AppProvider
 	TokenTTl     time.Duration
 }
 
@@ -40,17 +39,12 @@ type UserProvider interface {
 	ProvideUserByID(ctx context.Context, id int64) (models.User, error)
 }
 
-type AppProvider interface {
-	ProvideApp(ctx context.Context, appID int32) (models.App, error)
-}
-
 // New возвращает структуру для работы с пользователем
-func New(log *slog.Logger, userSaver UserSaver, userProvider UserProvider, appProvider AppProvider, tokenTTL time.Duration) *SSO {
+func New(log *slog.Logger, userSaver UserSaver, userProvider UserProvider, tokenTTL time.Duration) *SSO {
 	return &SSO{
 		Log:          log,
 		UserSaver:    userSaver,
 		UserProvider: userProvider,
-		AppProvider:  appProvider,
 		TokenTTl:     tokenTTL,
 	}
 }
@@ -92,7 +86,7 @@ func (sso *SSO) RegisterNewUser(ctx context.Context, email, password string) (in
 // Login ищет в базе данных пользователя с отправленным в запросе email-адресом
 // генерирует хэш пароля и сравнивает его с хранящимся в базе данных
 // Возвращает ошибку, если пользовтель не найден или передан неверный пароль
-func (sso *SSO) Login(ctx context.Context, email, password string, appID int32) (string, error) {
+func (sso *SSO) Login(ctx context.Context, email, password string) (string, error) {
 	const op = "internal/services/sso.Login"
 
 	log := sso.Log.With(slog.String("op", op), slog.String("email", email))
@@ -114,17 +108,12 @@ func (sso *SSO) Login(ctx context.Context, email, password string, appID int32) 
 		return "", fmt.Errorf("%s: %w", op, err)
 	}
 
-	if err = bcrypt.CompareHashAndPassword(user.PassHash, []byte(password)); err != nil {
-		log.Warn("invalid credentials", sl.Err(err))
+	if err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password)); err != nil {
+		log.Info("invalid credentials", sl.Err(err))
 		return "", fmt.Errorf("%s: %w", op, ErrInvalidCredentials)
 	}
 
-	app, err := sso.AppProvider.ProvideApp(ctx, appID)
-	if err != nil {
-		return "", fmt.Errorf("%s: %w", op, err)
-	}
-
-	token, err := jwt.New(user, app, sso.TokenTTl)
+	token, err := jwt.New(user, sso.TokenTTl)
 	if err != nil {
 		log.Error("failed to generate token", sl.Err(err))
 		return "", fmt.Errorf("%s: %w", op, err)

@@ -30,4 +30,6 @@ var (
 
 	EmailIsRequired    = status.Error(codes.InvalidArgument, "email is required")
 	PasswordIsRequired = status.Error(codes.InvalidArgument, "password is required")
+
+	AccessDenied = status.Error(codes.PermissionDenied, "access denied")
 )

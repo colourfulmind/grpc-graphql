@@ -2,11 +2,9 @@ package posts
 
 import (
 	"context"
-	"encoding/json"
 	"errors"
 	"fmt"
 	"google.golang.org/grpc"
-	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/timestamppb"
 	"time"
 
@@ -26,7 +24,7 @@ type ServerPosts struct {
 
 // Posts - описыает методы для сервиса публикации постов
 type Posts interface {
-	PostNew(ctx context.Context, userID int64, title, content string, allowComments bool) (int64, time.Time, error)
+	PostNew(ctx context.Context, token string, title, content string, allowComments bool) (int64, time.Time, error)
 	GetPostByID(ctx context.Context, postID int64) (models.Post, error)
 	GetAllPosts(ctx context.Context, page int64) ([]models.Post, error)
 }
@@ -48,7 +46,7 @@ func (s *ServerPosts) PostNew(ctx context.Context, req *server.NewPostRequest) (
 		return nil, fmt.Errorf("%s: %w", op, err)
 	}
 
-	postID, createdAt, err := s.posts.PostNew(ctx, req.GetUserId(), req.GetTitle(), req.GetContent(), req.Comments)
+	postID, createdAt, err := s.posts.PostNew(ctx, req.GetToken(), req.GetTitle(), req.GetContent(), req.Comments)
 	if err != nil {
 		if errors.Is(err, posts.ErrPostExists) {
 			return nil, fmt.Errorf("%s: %w", op, ewrap.PostAlreadyExists)
@@ -110,6 +108,7 @@ func (s *ServerPosts) GetPostByID(ctx context.Context, req *server.GetPostByIDRe
 	}
 
 	return &server.GetPostByIDResponse{
+		Id:        post.ID,
 		UserId:    post.UserID,
 		Title:     post.Title,
 		Content:   post.Content,
@@ -146,22 +145,21 @@ func (s *ServerPosts) GetAllPosts(ctx context.Context, req *server.GetAllPostsRe
 }
 
 func ConvertToPostResponse(posts []models.Post) (*server.GetPostResponse, error) {
-	postsJSON, err := json.Marshal(posts)
-	if err != nil {
-		return nil, errors.New("error marshalling posts to json")
-	}
-
-	var postsBytes []byte
-	err = json.Unmarshal(postsBytes, &postsJSON)
-	if err != nil {
-		return nil, errors.New("error unmarshalling posts to bytes")
-	}
-
 	res := &server.GetPostResponse{}
-	err = proto.Unmarshal(postsBytes, res)
-	if err != nil {
-		return nil, errors.New("error unmarshalling posts to GetPostResponse")
+
+	var serverPosts []*server.Post
+	for _, post := range posts {
+		serverPosts = append(serverPosts, &server.Post{
+			Id:        post.ID,
+			UserId:    post.UserID,
+			Title:     post.Title,
+			Content:   post.Content,
+			CreatedAt: timestamppb.New(post.CreatedAt),
+			Comments:  post.AllowComments,
+		})
 	}
+
+	res.Posts = serverPosts
 
 	return res, nil
 }

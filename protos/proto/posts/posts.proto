@@ -16,10 +16,11 @@ service Posts {
 }
 
 message NewPostRequest {
-  int64 user_id = 1;
-  string title = 2;
-  string content = 3;
-  bool comments = 4;
+  string token = 1;
+  int64 user_id = 2;
+  string title = 3;
+  string content = 4;
+  bool comments = 5;
 }
 
 message NewPostResponse {

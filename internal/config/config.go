@@ -4,22 +4,34 @@ import (
 	"flag"
 	"github.com/ilyakaznacheev/cleanenv"
 	"os"
+	postgres "ozon/internal/storage/postgres"
 	"time"
-
-	resolvers "ozon/internal/storage/graphql"
 )
 
 type Config struct {
-	Env      string             `yaml:"env"`
-	TokenTTL time.Duration      `yaml:"token_ttl"`
-	GRPC     GRPCConfig         `yaml:"grpc"`
-	Postgres resolvers.Postgres `yaml:"postgres"`
+	Env      string            `yaml:"env"`
+	TokenTTL time.Duration     `yaml:"token_ttl"`
+	GRPC     GRPCConfig        `yaml:"grpc"`
+	Postgres postgres.Postgres `yaml:"postgres"`
+	Clients  Clients           `yaml:"clients"`
 }
 
 type GRPCConfig struct {
 	Host    string        `yaml:"host"`
 	Port    int           `yaml:"port"`
 	Timeout time.Duration `yaml:"timeout"`
+}
+
+type Clients struct {
+	GRPCClient GRPCClient `yaml:"grpc_client"`
+}
+
+type GRPCClient struct {
+	Host         string        `yaml:"host"`
+	Port         int           `yaml:"port"`
+	RetriesCount int           `yaml:"retries_count"`
+	Timeout      time.Duration `yaml:"timeout"`
+	Insecure     bool          `yaml:"insecure"`
 }
 
 func MustLoad() *Config {

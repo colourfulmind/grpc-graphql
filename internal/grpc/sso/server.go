@@ -21,7 +21,7 @@ type ServerSSO struct {
 // SSO описывает методы для сервиса авторизации
 type SSO interface {
 	RegisterNewUser(ctx context.Context, email, password string) (int64, error)
-	Login(ctx context.Context, email, password string, appID int32) (string, error)
+	Login(ctx context.Context, email, password string) (string, error)
 }
 
 // Register регистрирует sso сервер
@@ -69,7 +69,7 @@ func (s *ServerSSO) Login(ctx context.Context, req *server.LoginRequest) (*serve
 		return nil, fmt.Errorf("%s: %w", op, err)
 	}
 
-	token, err := s.sso.Login(ctx, req.GetEmail(), req.GetPassword(), req.GetAppId())
+	token, err := s.sso.Login(ctx, req.GetEmail(), req.GetPassword())
 	if err != nil {
 		if errors.Is(err, sso.ErrInvalidCredentials) {
 			return nil, ewrap.ErrInvalidCredentials

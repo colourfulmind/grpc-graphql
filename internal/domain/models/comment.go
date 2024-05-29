@@ -15,5 +15,5 @@ type Comment struct {
 	/* время создания комментария */
 	CreatedAt time.Time `json:"created_at"`
 	/* Родительский комментарий */
-	CommentID int64 `json:"comment_id"`
+	ParentID int64 `json:"comment_id"`
 }

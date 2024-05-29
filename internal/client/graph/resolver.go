@@ -3,6 +3,9 @@ package graph
 import (
 	"database/sql"
 	"log/slog"
+	"ozon/protos/gen/go/comments"
+	"ozon/protos/gen/go/posts"
+	"ozon/protos/gen/go/sso"
 	"time"
 )
 
@@ -11,8 +14,11 @@ import (
 // It serves as dependency injection for your app, add any dependencies you require here.
 
 type Resolver struct {
-	DB  *sql.DB
-	log *slog.Logger
+	DB       *sql.DB
+	SSO      sso.SSOClient
+	Posts    posts.PostsClient
+	Comments comments.CommentsClient
+	log      *slog.Logger
 }
 
 const timeout = 30 * time.Second

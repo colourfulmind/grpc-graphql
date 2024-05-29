@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/golang-jwt/jwt/v5"
 	"log/slog"
 	"time"
 
@@ -51,13 +52,18 @@ func New(log *slog.Logger, postSaver PostSaver, postProvider PostProvider) *Post
 // PostNew публикует новый пост от имени пользователя
 // Возвращает ошибку, если статья с таким названием уже существует,
 // либо не удалось сделать запись в БД или если превышено время ожмдания ответа от БД
-func (p *Post) PostNew(ctx context.Context, userID int64, title, content string, allowComments bool) (int64, time.Time, error) {
+func (p *Post) PostNew(ctx context.Context, token string, title, content string, allowComments bool) (int64, time.Time, error) {
 	const op = "internal/services/posts.PostNew"
 
-	log := p.Log.With(slog.String("op", op), slog.Int64("user_id", userID))
+	log := p.Log.With(slog.String("op", op), slog.String("title", title))
 	log.Info("attempting to create new post")
 
-	postID, createdAt, err := p.PostSaver.SavePost(ctx, userID, title, content, allowComments)
+	claims, err := ParseToken(token, log)
+	if err != nil {
+		log.Error("access denied")
+	}
+
+	postID, createdAt, err := p.PostSaver.SavePost(ctx, int64(claims["uid"].(float64)), title, content, allowComments)
 	if err != nil {
 		if errors.Is(err, storage.ErrPostExists) {
 			log.Warn("post already exists", sl.Err(err))
@@ -84,7 +90,7 @@ func (p *Post) GetPostByID(ctx context.Context, postID int64) (
 	models.Post, error) {
 	const op = "internal/services/posts.GetPostByID"
 
-	log := p.Log.With(slog.String("op", op), slog.Int64("article id", postID))
+	log := p.Log.With(slog.String("op", op), slog.Int64("post_id", postID))
 	log.Info("attempting to get post by id")
 
 	post, err := p.PostProvider.ProvidePost(ctx, postID)
@@ -143,4 +149,25 @@ func (p *Post) GetAllPosts(ctx context.Context, page int64) ([]models.Post, erro
 
 	log.Info("posts retrieved successfully")
 	return posts, nil
+}
+
+func ParseToken(token string, log *slog.Logger) (jwt.MapClaims, error) {
+	const op = "internal/clients/blog/ParseToken"
+
+	tokenParsed, err := jwt.Parse(token, func(token *jwt.Token) (interface{}, error) {
+		return []byte("secret-key"), nil
+	})
+
+	log.Info("parsed", slog.Any("token", tokenParsed))
+	if err != nil {
+		log.Error("error parsing", op, slog.String("error", err.Error()))
+		return jwt.MapClaims{}, err
+	}
+
+	claims, ok := tokenParsed.Claims.(jwt.MapClaims)
+	if !ok {
+		return jwt.MapClaims{}, errors.New("cannot get claims")
+	}
+
+	return claims, nil
 }
