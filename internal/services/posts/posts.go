@@ -105,16 +105,6 @@ func (p *Post) GetPostByID(ctx context.Context, postID int64) (
 			return models.Post{}, fmt.Errorf("%s: %w", op, ErrConnectionTime)
 		}
 
-		if errors.Is(err, storage.ErrGetComments) {
-			log.Error("could not get comments", sl.Err(err))
-			return models.Post{}, fmt.Errorf("%s: %w", op, ErrGetComments)
-		}
-
-		if errors.Is(err, storage.ErrFoundComments) {
-			log.Warn("could not find comments", sl.Err(err))
-			return models.Post{}, fmt.Errorf("%s: %w", op, ErrFoundComments)
-		}
-
 		log.Error("failed to get post", sl.Err(err))
 		return models.Post{}, fmt.Errorf("%s: %w", op, err)
 	}
@@ -133,11 +123,6 @@ func (p *Post) GetAllPosts(ctx context.Context, page int64) ([]models.Post, erro
 
 	posts, err := p.PostProvider.ProvideAllPosts(ctx, page)
 	if err != nil {
-		if errors.Is(err, storage.ErrGetPosts) {
-			log.Error("posts not found", sl.Err(err))
-			return []models.Post{}, ErrGetPosts
-		}
-
 		if errors.Is(err, storage.ErrConnectionTime) {
 			log.Error("connection time expired", sl.Err(err))
 			return []models.Post{}, fmt.Errorf("%s: %w", op, ErrConnectionTime)

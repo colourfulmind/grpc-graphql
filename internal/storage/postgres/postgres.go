@@ -288,7 +288,6 @@ func (r *MutationResolver) ProvideAllPosts(ctx context.Context, page int64) ([]m
 	defer cancel()
 
 	done := make(chan struct{}, 1)
-	errExists := make(chan struct{}, 1)
 	errQuery := make(chan struct{}, 1)
 
 	var posts []models.Post
@@ -296,36 +295,30 @@ func (r *MutationResolver) ProvideAllPosts(ctx context.Context, page int64) ([]m
 		rows, err := r.DB.QueryContext(ctx,
 			"SELECT id, title, content, comments_allowed, created_at, user_id  FROM posts ORDER BY id LIMIT 10 OFFSET $1;", (page-1)*10)
 		defer rows.Close()
-		if errors.Is(err, sql.ErrNoRows) {
-			errExists <- struct{}{}
-		} else {
-			if err != nil {
-				errQuery <- struct{}{}
-			} else {
-				for rows.Next() {
-					var row models.Post
 
-					err = rows.Scan(&row.ID, &row.Title, &row.Content, &row.AllowComments, &row.CreatedAt, &row.UserID)
-					if err != nil {
-						errQuery <- struct{}{}
-					}
-					posts = append(posts, row)
-				}
-				if err = rows.Err(); err != nil {
+		if err != nil {
+			errQuery <- struct{}{}
+		} else {
+			for rows.Next() {
+				var row models.Post
+
+				err = rows.Scan(&row.ID, &row.Title, &row.Content, &row.AllowComments, &row.CreatedAt, &row.UserID)
+				if err != nil {
 					errQuery <- struct{}{}
 				}
-
-				done <- struct{}{}
+				posts = append(posts, row)
 			}
+			if err = rows.Err(); err != nil {
+				errQuery <- struct{}{}
+			}
+
+			done <- struct{}{}
 		}
 		close(errQuery)
-		close(errExists)
 		close(done)
 	}()
 
 	select {
-	case <-errExists:
-		return []models.Post{}, fmt.Errorf("%s: %w", op, storage.ErrPostNotFound)
 	case <-errQuery:
 		return []models.Post{}, fmt.Errorf("%s: %w", op, storage.ErrQuery)
 	case <-ctx.Done():

@@ -6,7 +6,6 @@ import (
 	"ozon/protos/gen/go/comments"
 	"ozon/protos/gen/go/posts"
 	"ozon/protos/gen/go/sso"
-	"time"
 )
 
 // This file will not be regenerated automatically.
@@ -20,5 +19,3 @@ type Resolver struct {
 	Comments comments.CommentsClient
 	log      *slog.Logger
 }
-
-const timeout = 30 * time.Second

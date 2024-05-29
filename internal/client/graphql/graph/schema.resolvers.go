@@ -9,7 +9,7 @@ import (
 	"database/sql"
 	"fmt"
 	"log/slog"
-	"ozon/internal/client/graph/model"
+	"ozon/internal/client/graphql/graph/model"
 	"ozon/internal/storage/postgres"
 	"ozon/protos/gen/go/comments"
 	"ozon/protos/gen/go/posts"
@@ -36,7 +36,6 @@ func New(p postgres.Postgres, cc *grpc.ClientConn, log *slog.Logger) (*MutationR
 
 	return &MutationResolverStruct{
 		&Resolver{
-			DB:       db,
 			SSO:      sso.NewSSOClient(cc),
 			Posts:    posts.NewPostsClient(cc),
 			Comments: comments.NewCommentsClient(cc),

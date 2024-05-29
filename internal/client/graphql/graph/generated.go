@@ -8,7 +8,7 @@ import (
 	"embed"
 	"errors"
 	"fmt"
-	"ozon/internal/client/graph/model"
+	"ozon/internal/client/graphql/graph/model"
 	"strconv"
 	"sync"
 	"sync/atomic"

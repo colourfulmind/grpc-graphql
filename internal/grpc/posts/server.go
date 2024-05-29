@@ -96,14 +96,6 @@ func (s *ServerPosts) GetPostByID(ctx context.Context, req *server.GetPostByIDRe
 			return nil, fmt.Errorf("%s: %w", op, ewrap.ErrConnectionTime)
 		}
 
-		if errors.Is(err, posts.ErrGetComments) {
-			return nil, fmt.Errorf("%s: %w", op, ewrap.ErrGetComments)
-		}
-
-		if errors.Is(err, posts.ErrFoundComments) {
-			return nil, fmt.Errorf("%s: %w", op, ewrap.ErrFoundComments)
-		}
-
 		return nil, fmt.Errorf("%s: %w", op, ewrap.InternalError)
 	}
 
@@ -130,10 +122,6 @@ func (s *ServerPosts) GetAllPosts(ctx context.Context, req *server.GetAllPostsRe
 
 	post, err := s.posts.GetAllPosts(ctx, req.GetPage())
 	if err != nil {
-		if errors.Is(err, posts.ErrGetPosts) {
-			return nil, fmt.Errorf("%s: %w", op, ewrap.ErrGetPosts)
-		}
-
 		if errors.Is(err, posts.ErrConnectionTime) {
 			return nil, fmt.Errorf("%s: %w", op, ewrap.ErrConnectionTime)
 		}

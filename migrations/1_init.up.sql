@@ -28,15 +28,3 @@ CREATE TABLE IF NOT EXISTS comments
     FOREIGN KEY (post_id) REFERENCES posts(id),
     FOREIGN KEY (parent_id) REFERENCES comments(id)
 );
-
-INSERT INTO users (email, password) VALUES ('test@test.com', '12345678');
-INSERT INTO users (email, password) VALUES ('test2@test.com', '12345678');
-INSERT INTO users (email, password) VALUES ('test3@test.com', '12345678');
-
-INSERT INTO posts (title, content, comments, user_id) VALUES ('Test1', 'hello, world', true);
-INSERT INTO posts (title, content, comments, user_id) VALUES ('Test2', 'hello, world', true);
-INSERT INTO posts (title, content, comments, user_id) VALUES ('Test3', 'hello, world', false);
-
-INSERT INTO comments (content, user_id, post_id, parent_id) VALUES ('TestComment1', 1, 1, 0);
-INSERT INTO comments (content, user_id, post_id, parent_id) VALUES ('TestComment2', 1, 1, 1);
-INSERT INTO comments (content, user_id, post_id, parent_id) VALUES ('TestComment3', 1, 1, 1);
