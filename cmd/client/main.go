@@ -23,7 +23,7 @@ func main() {
 	cfg := config.MustLoad()
 
 	log := logsetup.SetupLogger(cfg.Env)
-	log.Info("starting test_client", slog.Any("config", cfg.Clients.GRPCClient))
+	log.Info("starting client", slog.Any("config", cfg.Clients.GRPCClient))
 
 	cc, err := graphql.NewConnection(
 		context.Background(),
