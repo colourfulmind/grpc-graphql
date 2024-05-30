@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"io"
+	"io/ioutil"
 	"net/http"
 	"testing"
 )
@@ -21,7 +21,7 @@ func TestSaveUserGraphQLSuccess1(t *testing.T) {
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		respBody, readErr := io.ReadAll(resp.Body)
+		respBody, readErr := ioutil.ReadAll(resp.Body)
 		if readErr != nil {
 			t.Fatalf("could not read response body: %v", readErr)
 		}
@@ -29,7 +29,7 @@ func TestSaveUserGraphQLSuccess1(t *testing.T) {
 		t.Fatalf("unexpected status: got %v want %v", resp.StatusCode, http.StatusOK)
 	}
 
-	respBody, err := io.ReadAll(resp.Body)
+	respBody, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		t.Fatalf("could not read response body: %v", err)
 	}
@@ -62,7 +62,7 @@ func TestSaveUserGraphQLSuccess2(t *testing.T) {
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		respBody, readErr := io.ReadAll(resp.Body)
+		respBody, readErr := ioutil.ReadAll(resp.Body)
 		if readErr != nil {
 			t.Fatalf("could not read response body: %v", readErr)
 		}
@@ -70,7 +70,7 @@ func TestSaveUserGraphQLSuccess2(t *testing.T) {
 		t.Fatalf("unexpected status: got %v want %v", resp.StatusCode, http.StatusOK)
 	}
 
-	respBody, err := io.ReadAll(resp.Body)
+	respBody, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		t.Fatalf("could not read response body: %v", err)
 	}
@@ -104,7 +104,7 @@ func TestSaveUserGraphQLFail(t *testing.T) {
 
 	fmt.Println("response Body:", resp.Body)
 	if resp.StatusCode != http.StatusOK {
-		respBody, readErr := io.ReadAll(resp.Body)
+		respBody, readErr := ioutil.ReadAll(resp.Body)
 		if readErr != nil {
 			t.Fatalf("could not read response body: %v", readErr)
 		}
@@ -112,7 +112,7 @@ func TestSaveUserGraphQLFail(t *testing.T) {
 		t.Fatalf("unexpected status: got %v want %v", resp.StatusCode, http.StatusOK)
 	}
 
-	respBody, err := io.ReadAll(resp.Body)
+	respBody, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		t.Fatalf("could not read response body: %v", err)
 	}
@@ -141,7 +141,7 @@ func TestLoginGraphQLSuccess(t *testing.T) {
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		respBody, readErr := io.ReadAll(resp.Body)
+		respBody, readErr := ioutil.ReadAll(resp.Body)
 		if readErr != nil {
 			t.Fatalf("could not read response body: %v", readErr)
 		}
@@ -149,7 +149,7 @@ func TestLoginGraphQLSuccess(t *testing.T) {
 		t.Fatalf("unexpected status: got %v want %v", resp.StatusCode, http.StatusOK)
 	}
 
-	respBody, err := io.ReadAll(resp.Body)
+	respBody, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		t.Fatalf("could not read response body: %v", err)
 	}
@@ -181,7 +181,7 @@ func TestLoginGraphQLFail(t *testing.T) {
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		respBody, readErr := io.ReadAll(resp.Body)
+		respBody, readErr := ioutil.ReadAll(resp.Body)
 		if readErr != nil {
 			t.Fatalf("could not read response body: %v", readErr)
 		}
@@ -189,7 +189,7 @@ func TestLoginGraphQLFail(t *testing.T) {
 		t.Fatalf("unexpected status: got %v want %v", resp.StatusCode, http.StatusOK)
 	}
 
-	respBody, err := io.ReadAll(resp.Body)
+	respBody, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		t.Fatalf("could not read response body: %v", err)
 	}
@@ -217,7 +217,7 @@ func TestSavePostGraphQLSuccess1(t *testing.T) {
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		respBody, readErr := io.ReadAll(resp.Body)
+		respBody, readErr := ioutil.ReadAll(resp.Body)
 		if readErr != nil {
 			t.Fatalf("could not read response body: %v", readErr)
 		}
@@ -225,7 +225,7 @@ func TestSavePostGraphQLSuccess1(t *testing.T) {
 		t.Fatalf("unexpected status: got %v want %v", resp.StatusCode, http.StatusOK)
 	}
 
-	respBody, err := io.ReadAll(resp.Body)
+	respBody, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		t.Fatalf("could not read response body: %v", err)
 	}
@@ -258,7 +258,7 @@ func TestSavePostGraphQLSuccess2(t *testing.T) {
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		respBody, readErr := io.ReadAll(resp.Body)
+		respBody, readErr := ioutil.ReadAll(resp.Body)
 		if readErr != nil {
 			t.Fatalf("could not read response body: %v", readErr)
 		}
@@ -266,7 +266,7 @@ func TestSavePostGraphQLSuccess2(t *testing.T) {
 		t.Fatalf("unexpected status: got %v want %v", resp.StatusCode, http.StatusOK)
 	}
 
-	respBody, err := io.ReadAll(resp.Body)
+	respBody, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		t.Fatalf("could not read response body: %v", err)
 	}
@@ -299,7 +299,7 @@ func TestSavePostGraphQLFail(t *testing.T) {
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		respBody, readErr := io.ReadAll(resp.Body)
+		respBody, readErr := ioutil.ReadAll(resp.Body)
 		if readErr != nil {
 			t.Fatalf("could not read response body: %v", readErr)
 		}
@@ -307,7 +307,7 @@ func TestSavePostGraphQLFail(t *testing.T) {
 		t.Fatalf("unexpected status: got %v want %v", resp.StatusCode, http.StatusOK)
 	}
 
-	respBody, err := io.ReadAll(resp.Body)
+	respBody, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		t.Fatalf("could not read response body: %v", err)
 	}
@@ -335,7 +335,7 @@ func TestProvidePostGraphQLSuccess1(t *testing.T) {
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		respBody, readErr := io.ReadAll(resp.Body)
+		respBody, readErr := ioutil.ReadAll(resp.Body)
 		if readErr != nil {
 			t.Fatalf("could not read response body: %v", readErr)
 		}
@@ -343,7 +343,7 @@ func TestProvidePostGraphQLSuccess1(t *testing.T) {
 		t.Fatalf("unexpected status: got %v want %v", resp.StatusCode, http.StatusOK)
 	}
 
-	respBody, err := io.ReadAll(resp.Body)
+	respBody, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		t.Fatalf("could not read response body: %v", err)
 	}
@@ -378,7 +378,7 @@ func TestProvidePostGraphQLSuccess2(t *testing.T) {
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		respBody, readErr := io.ReadAll(resp.Body)
+		respBody, readErr := ioutil.ReadAll(resp.Body)
 		if readErr != nil {
 			t.Fatalf("could not read response body: %v", readErr)
 		}
@@ -386,7 +386,7 @@ func TestProvidePostGraphQLSuccess2(t *testing.T) {
 		t.Fatalf("unexpected status: got %v want %v", resp.StatusCode, http.StatusOK)
 	}
 
-	respBody, err := io.ReadAll(resp.Body)
+	respBody, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		t.Fatalf("could not read response body: %v", err)
 	}
@@ -421,7 +421,7 @@ func TestProvidePostGraphQLFail(t *testing.T) {
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		respBody, readErr := io.ReadAll(resp.Body)
+		respBody, readErr := ioutil.ReadAll(resp.Body)
 		if readErr != nil {
 			t.Fatalf("could not read response body: %v", readErr)
 		}
@@ -429,7 +429,7 @@ func TestProvidePostGraphQLFail(t *testing.T) {
 		t.Fatalf("unexpected status: got %v want %v", resp.StatusCode, http.StatusOK)
 	}
 
-	respBody, err := io.ReadAll(resp.Body)
+	respBody, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		t.Fatalf("could not read response body: %v", err)
 	}
@@ -457,7 +457,7 @@ func TestProvideAllPostsGraphQL1(t *testing.T) {
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		respBody, readErr := io.ReadAll(resp.Body)
+		respBody, readErr := ioutil.ReadAll(resp.Body)
 		if readErr != nil {
 			t.Fatalf("could not read response body: %v", readErr)
 		}
@@ -465,7 +465,7 @@ func TestProvideAllPostsGraphQL1(t *testing.T) {
 		t.Fatalf("unexpected status: got %v want %v", resp.StatusCode, http.StatusOK)
 	}
 
-	respBody, err := io.ReadAll(resp.Body)
+	respBody, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		t.Fatalf("could not read response body: %v", err)
 	}
@@ -499,7 +499,7 @@ func TestProvideAllPostsGraphQL2(t *testing.T) {
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		respBody, readErr := io.ReadAll(resp.Body)
+		respBody, readErr := ioutil.ReadAll(resp.Body)
 		if readErr != nil {
 			t.Fatalf("could not read response body: %v", readErr)
 		}
@@ -507,7 +507,7 @@ func TestProvideAllPostsGraphQL2(t *testing.T) {
 		t.Fatalf("unexpected status: got %v want %v", resp.StatusCode, http.StatusOK)
 	}
 
-	respBody, err := io.ReadAll(resp.Body)
+	respBody, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		t.Fatalf("could not read response body: %v", err)
 	}
@@ -541,7 +541,7 @@ func TestSaveCommentGraphQLSuccess1(t *testing.T) {
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		respBody, readErr := io.ReadAll(resp.Body)
+		respBody, readErr := ioutil.ReadAll(resp.Body)
 		if readErr != nil {
 			t.Fatalf("could not read response body: %v", readErr)
 		}
@@ -549,7 +549,7 @@ func TestSaveCommentGraphQLSuccess1(t *testing.T) {
 		t.Fatalf("unexpected status: got %v want %v", resp.StatusCode, http.StatusOK)
 	}
 
-	respBody, err := io.ReadAll(resp.Body)
+	respBody, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		t.Fatalf("could not read response body: %v", err)
 	}
@@ -583,7 +583,7 @@ func TestSaveCommentGraphQLSuccess2(t *testing.T) {
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		respBody, readErr := io.ReadAll(resp.Body)
+		respBody, readErr := ioutil.ReadAll(resp.Body)
 		if readErr != nil {
 			t.Fatalf("could not read response body: %v", readErr)
 		}
@@ -591,7 +591,7 @@ func TestSaveCommentGraphQLSuccess2(t *testing.T) {
 		t.Fatalf("unexpected status: got %v want %v", resp.StatusCode, http.StatusOK)
 	}
 
-	respBody, err := io.ReadAll(resp.Body)
+	respBody, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		t.Fatalf("could not read response body: %v", err)
 	}
@@ -625,7 +625,7 @@ func TestSaveCommentGraphQLFail1(t *testing.T) {
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		respBody, readErr := io.ReadAll(resp.Body)
+		respBody, readErr := ioutil.ReadAll(resp.Body)
 		if readErr != nil {
 			t.Fatalf("could not read response body: %v", readErr)
 		}
@@ -633,7 +633,7 @@ func TestSaveCommentGraphQLFail1(t *testing.T) {
 		t.Fatalf("unexpected status: got %v want %v", resp.StatusCode, http.StatusOK)
 	}
 
-	respBody, err := io.ReadAll(resp.Body)
+	respBody, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		t.Fatalf("could not read response body: %v", err)
 	}
@@ -662,7 +662,7 @@ func TestSaveCommentGraphQLFail2(t *testing.T) {
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		respBody, readErr := io.ReadAll(resp.Body)
+		respBody, readErr := ioutil.ReadAll(resp.Body)
 		if readErr != nil {
 			t.Fatalf("could not read response body: %v", readErr)
 		}
@@ -670,7 +670,7 @@ func TestSaveCommentGraphQLFail2(t *testing.T) {
 		t.Fatalf("unexpected status: got %v want %v", resp.StatusCode, http.StatusOK)
 	}
 
-	respBody, err := io.ReadAll(resp.Body)
+	respBody, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		t.Fatalf("could not read response body: %v", err)
 	}
@@ -699,7 +699,7 @@ func TestSaveCommentToCommentGraphQLSuccess1(t *testing.T) {
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		respBody, readErr := io.ReadAll(resp.Body)
+		respBody, readErr := ioutil.ReadAll(resp.Body)
 		if readErr != nil {
 			t.Fatalf("could not read response body: %v", readErr)
 		}
@@ -707,7 +707,7 @@ func TestSaveCommentToCommentGraphQLSuccess1(t *testing.T) {
 		t.Fatalf("unexpected status: got %v want %v", resp.StatusCode, http.StatusOK)
 	}
 
-	respBody, err := io.ReadAll(resp.Body)
+	respBody, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		t.Fatalf("could not read response body: %v", err)
 	}
@@ -741,7 +741,7 @@ func TestSaveCommentToCommentGraphQLSuccess2(t *testing.T) {
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		respBody, readErr := io.ReadAll(resp.Body)
+		respBody, readErr := ioutil.ReadAll(resp.Body)
 		if readErr != nil {
 			t.Fatalf("could not read response body: %v", readErr)
 		}
@@ -749,7 +749,7 @@ func TestSaveCommentToCommentGraphQLSuccess2(t *testing.T) {
 		t.Fatalf("unexpected status: got %v want %v", resp.StatusCode, http.StatusOK)
 	}
 
-	respBody, err := io.ReadAll(resp.Body)
+	respBody, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		t.Fatalf("could not read response body: %v", err)
 	}
@@ -783,7 +783,7 @@ func TestSaveCommentToCommentGraphQLFail1(t *testing.T) {
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		respBody, readErr := io.ReadAll(resp.Body)
+		respBody, readErr := ioutil.ReadAll(resp.Body)
 		if readErr != nil {
 			t.Fatalf("could not read response body: %v", readErr)
 		}
@@ -791,7 +791,7 @@ func TestSaveCommentToCommentGraphQLFail1(t *testing.T) {
 		t.Fatalf("unexpected status: got %v want %v", resp.StatusCode, http.StatusOK)
 	}
 
-	respBody, err := io.ReadAll(resp.Body)
+	respBody, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		t.Fatalf("could not read response body: %v", err)
 	}
@@ -820,7 +820,7 @@ func TestProvideCommentGraphQL1(t *testing.T) {
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		respBody, readErr := io.ReadAll(resp.Body)
+		respBody, readErr := ioutil.ReadAll(resp.Body)
 		if readErr != nil {
 			t.Fatalf("could not read response body: %v", readErr)
 		}
@@ -828,7 +828,7 @@ func TestProvideCommentGraphQL1(t *testing.T) {
 		t.Fatalf("unexpected status: got %v want %v", resp.StatusCode, http.StatusOK)
 	}
 
-	respBody, err := io.ReadAll(resp.Body)
+	respBody, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		t.Fatalf("could not read response body: %v", err)
 	}
@@ -862,7 +862,7 @@ func TestProvideCommentGraphQ2(t *testing.T) {
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		respBody, readErr := io.ReadAll(resp.Body)
+		respBody, readErr := ioutil.ReadAll(resp.Body)
 		if readErr != nil {
 			t.Fatalf("could not read response body: %v", readErr)
 		}
@@ -870,7 +870,7 @@ func TestProvideCommentGraphQ2(t *testing.T) {
 		t.Fatalf("unexpected status: got %v want %v", resp.StatusCode, http.StatusOK)
 	}
 
-	respBody, err := io.ReadAll(resp.Body)
+	respBody, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		t.Fatalf("could not read response body: %v", err)
 	}

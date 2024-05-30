@@ -8,7 +8,7 @@ import (
 	"ozon/internal/services/comments"
 	"ozon/internal/services/posts"
 	"ozon/internal/services/sso"
-	postgres "ozon/internal/storage/postgres"
+	"ozon/internal/storage/postgres"
 	"ozon/pkg/logger/sl"
 )
 

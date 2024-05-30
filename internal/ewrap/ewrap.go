@@ -7,7 +7,6 @@ import (
 )
 
 var (
-	UserIdIsRequired      = status.Error(codes.InvalidArgument, "user id is required")
 	ErrInvalidEmail       = status.Error(codes.InvalidArgument, "email is invalid")
 	ErrParsingRegex       = status.Error(codes.InvalidArgument, "error parsing regexp")
 	ErrPasswordRequired   = status.Error(codes.InvalidArgument, "password is required")
@@ -26,10 +25,5 @@ var (
 	PostIDIsRequired  = status.Error(codes.InvalidArgument, "id is required")
 	TitleIsRequired   = status.Error(codes.InvalidArgument, "title is required")
 	TextIsRequired    = status.Error(codes.InvalidArgument, "text is required")
-	ErrGetPosts       = status.Error(codes.NotFound, "error getting posts")
-
-	EmailIsRequired    = status.Error(codes.InvalidArgument, "email is required")
-	PasswordIsRequired = status.Error(codes.InvalidArgument, "password is required")
-
-	AccessDenied = status.Error(codes.PermissionDenied, "access denied")
+	AccessDenied      = status.Error(codes.PermissionDenied, "access denied")
 )

@@ -1,7 +1,7 @@
 env: "local"
 token_ttl: 1h
 grpc:
-  port: 8080
+  port: 8888
   timeout: 3s
 postgres:
   host: "db"
@@ -12,6 +12,7 @@ postgres:
   ssl_mode: "disable"
 clients:
   grpc:
+    host: ""
     port: "8080"
     retries_count: 5
     timeout: 3s
