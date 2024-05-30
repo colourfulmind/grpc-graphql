@@ -51,14 +51,6 @@ func New(p Postgres, log *slog.Logger) (*MutationResolver, error) {
 	}, nil
 }
 
-func (r *Resolver) Mutation() MutationResolver {
-	return MutationResolver{r}
-}
-
-func (r *Resolver) Query() QueryResolver {
-	return QueryResolver{r}
-}
-
 type QueryResolver struct{ *Resolver }
 type MutationResolver struct{ *Resolver }
 

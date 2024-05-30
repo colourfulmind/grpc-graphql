@@ -49,9 +49,9 @@ func main() {
 	http.Handle("/", playground.Handler("GraphQL playground", "/query"))
 	http.Handle("/query", srv)
 
-	log.Info("", slog.String("connect to http://localhost:%s/ for GraphQL playground", "8080"))
+	log.Info("", slog.String("connect to http://localhost:%s/ for GraphQL playground", cfg.Clients.GRPCClient.Port))
 
-	go http.ListenAndServe("localhost:8080", nil)
+	go http.ListenAndServe(cfg.Clients.GRPCClient.Host+":"+cfg.Clients.GRPCClient.Port, nil)
 
 	stop := make(chan os.Signal, 1)
 	signal.Notify(stop, syscall.SIGTERM, syscall.SIGINT)

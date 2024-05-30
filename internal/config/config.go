@@ -23,15 +23,14 @@ type GRPCConfig struct {
 }
 
 type Clients struct {
-	GRPCClient GRPCClient `yaml:"grpc_client"`
+	GRPCClient GRPCClient `yaml:"grpc"`
 }
 
 type GRPCClient struct {
 	Host         string        `yaml:"host"`
-	Port         int           `yaml:"port"`
+	Port         string        `yaml:"port"`
 	RetriesCount int           `yaml:"retries_count"`
 	Timeout      time.Duration `yaml:"timeout"`
-	Insecure     bool          `yaml:"insecure"`
 }
 
 func MustLoad() *Config {

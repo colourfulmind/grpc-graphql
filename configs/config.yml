@@ -11,3 +11,9 @@ postgres:
   password: "postgres"
   db_name: "postgres"
   ssl_mode: "disable"
+clients:
+  grpc:
+    host: localhost
+    port: "8080"
+    retries_count: 5
+    timeout: 3s
