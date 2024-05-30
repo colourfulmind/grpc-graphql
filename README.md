@@ -10,7 +10,7 @@ docker-compose up --build
 make build
 ```
 
-### Запуск сервера
+### Запуск тестов
 ```shell
 sh tests.sh
 ```
