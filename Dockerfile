@@ -22,9 +22,7 @@ COPY --from=builder /app/client /app/client
 COPY --from=builder /app/migrator /app/migrator
 COPY --from=builder /app/configs /app/configs
 COPY --from=builder /app/migrations /app/migrations
-COPY wait-for-it.sh /app/wait-for-it.sh
 
 EXPOSE 8080
-EXPOSE 5432
 
-CMD ["/app/wait-for-it.sh", "db:5432", "--", "/app/migrator", "--config=./configs/config.yml", "/app/server", "--config=./configs/config.yml", "/app/client", "--config=./configs/config.yml"]
+CMD ["/app/migrator", "--config=./configs/config.yml", "/app/server", "--config=./configs/config.yml", "/app/client", "--config=./configs/config.yml"]

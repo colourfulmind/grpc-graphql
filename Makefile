@@ -1,14 +1,14 @@
 .PHONY: migrate
 migrate:
-	docker-compose run --rm app ./migrator
+	go run cmd/migrator/main.go
 
 .PHONY: build_server
 build_server:
-	docker-compose run --rm app go run ./server --config=./configs/config.yml
+	go run cmd/server/main.go --config=./configs/config.yml
 
 .PHONY: build_client
 build_client:
-	docker-compose run --rm app go run ./client --config=./configs/config.yml
+	go run cmd/client/main.go --config=./configs/config.yml
 
 .PHONY: tests
 tests:

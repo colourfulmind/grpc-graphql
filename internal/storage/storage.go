@@ -12,10 +12,7 @@ var (
 
 	ErrPostExists   = errors.New("post with the same title already exists")
 	ErrPostNotFound = errors.New("post does not exist")
-	ErrGetPosts     = errors.New("failed to get posts")
 
 	ErrQuery      = errors.New("failed query")
 	ErrNotAllowed = errors.New("comments on post not allowed")
-
-	// ErrAppNotFound  = errors.New("app not found")
 )

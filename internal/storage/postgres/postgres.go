@@ -35,6 +35,8 @@ func New(p Postgres, log *slog.Logger) (*MutationResolver, error) {
 	conn := fmt.Sprintf("host=%s port=%d user=%s dbname=%s password=%s sslmode=%s",
 		p.Host, p.Port, p.User, p.DBName, p.Password, p.SSLMode)
 
+	fmt.Println(conn)
+
 	db, err := sql.Open("postgres", conn)
 	if err != nil {
 		panic(err)

@@ -28,7 +28,7 @@ func main() {
 	cc, err := graphql.NewConnection(
 		context.Background(),
 		log,
-		cfg.GRPC.Host+":"+strconv.Itoa(cfg.GRPC.Port),
+		":"+strconv.Itoa(cfg.GRPC.Port),
 		cfg.Clients.GRPCClient.RetriesCount,
 		cfg.Clients.GRPCClient.Timeout,
 	)
@@ -51,7 +51,7 @@ func main() {
 
 	log.Info("", slog.String("connect to http://localhost:%s/ for GraphQL playground", cfg.Clients.GRPCClient.Port))
 
-	go http.ListenAndServe(cfg.Clients.GRPCClient.Host+":"+cfg.Clients.GRPCClient.Port, nil)
+	go http.ListenAndServe(":"+cfg.Clients.GRPCClient.Port, nil)
 
 	stop := make(chan os.Signal, 1)
 	signal.Notify(stop, syscall.SIGTERM, syscall.SIGINT)
